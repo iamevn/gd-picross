@@ -1,7 +1,9 @@
 tool
 extends TextureButton
 
-enum CellState {EMPTY, FILLED, CROSSED, MARKED}
+const enums = preload("enum.gd")
+const CellState = enums.CellState
+
 var state = CellState.EMPTY
 signal cell_changed(cell)
 

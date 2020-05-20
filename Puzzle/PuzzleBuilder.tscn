@@ -99,7 +99,6 @@ __meta__ = {
 }
 
 [node name="Cursor" type="Sprite" parent="VBoxContainer/HBoxContainer/PuzzleAreaPanel"]
-position = Vector2( 22.8625, 54.9534 )
 texture = ExtResource( 3 )
 centered = false
 script = ExtResource( 8 )
