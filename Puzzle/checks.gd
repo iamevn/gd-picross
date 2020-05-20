@@ -52,7 +52,7 @@ static func check_single_subclue(i: int, clue: Array, cells_s: String) -> bool:
 			regex_string += "^(?<pre>"
 			for j in range(len(clue)):
 				if j == i:
-					regex_string += "X[_X]*)(?<posn>O{%s})X" % clue[j]
+					regex_string += "[_X]*X)(?<posn>O{%s})X" % clue[j]
 				elif j == 0:
 					regex_string += "[_X]*[O_]{%s}" % clue[j]
 				elif j == i + 1:
