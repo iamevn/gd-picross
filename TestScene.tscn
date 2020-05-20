@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Puzzle/PuzzleBuilder.tscn" type="PackedScene" id=1]
+[ext_resource path="res://TestScene.gd" type="Script" id=3]
+
+[node name="TestScene" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = -1276.93
+margin_top = -1681.1
+margin_right = 1846.07
+margin_bottom = 2145.9
+color = Color( 0.85098, 0.85098, 0.85098, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PuzzleBuilder" parent="." instance=ExtResource( 1 )]
+margin_left = 0.0
+margin_top = 0.0
+margin_right = 568.0
+margin_bottom = 440.0
+raw_clues_top = "1|1,4|5|1,4|1|11|1|5,4|1,1|5,1|1,1"
+raw_clues_side = "1|1,1,1,1|1,1,1,1|1,1,1,1|1,1,1,1|11|1|1,1,1,1|1,1,1,1|1,1,1,1|1,1,1,4"

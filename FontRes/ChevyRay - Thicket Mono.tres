@@ -1,0 +1,11 @@
+[gd_resource type="DynamicFont" load_steps=2 format=2]
+
+[sub_resource type="DynamicFontData" id=1]
+antialiased = false
+hinting = 0
+font_path = "res://Fonts/Chevy Ray's Pixel Fonts/ChevyRay - Thicket Mono.ttf"
+
+[resource]
+size = 12
+outline_color = Color( 0.129412, 0.129412, 0.129412, 1 )
+font_data = SubResource( 1 )
