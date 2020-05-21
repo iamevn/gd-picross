@@ -279,3 +279,58 @@ func _ready():
 	clue_set(Sides.SIDE, raw_clues_side)
 	self.connect("grid_reset", find_node("Cursor"), "_grid_reset")
 	reset_grid()
+
+var key_state = {
+	last_pressed = null,
+	last_op = "set",
+}
+
+func _input(event: InputEvent):
+	var cursor = find_node("Cursor")
+	var cursor_cell = get_cell(cursor.coords.x, cursor.coords.y)
+	match event.as_text():
+		"Up", "Down", "Left", "Right":
+			cursor.passed_input(event)
+			cursor_cell = get_cell(cursor.coords.x, cursor.coords.y)
+			if not key_state.last_pressed == null:
+				print("continuing %s %s" % [key_state.last_op, key_state.last_pressed])
+				cursor_cell.set_continue(key_state.last_op == "set", key_state.last_pressed)
+		"Z":
+			if event.is_pressed() and key_state.last_pressed == null:
+				var new_state = cursor_cell.set_state_soft(CellState.FILLED)
+				if new_state == CellState.FILLED:
+					key_state.last_op = "set"
+				elif new_state == CellState.EMPTY:
+					key_state.last_op = "clear"
+				key_state.last_pressed = CellState.FILLED
+			elif not event.is_pressed() and key_state.last_pressed == CellState.FILLED:
+				key_state.last_pressed = null
+		"X":
+			if event.is_pressed() and key_state.last_pressed == null:
+				var new_state = cursor_cell.set_state_soft(CellState.CROSSED)
+				if new_state == CellState.CROSSED:
+					key_state.last_op = "set"
+				elif new_state == CellState.EMPTY:
+					key_state.last_op = "clear"
+				key_state.last_pressed = CellState.CROSSED
+			elif not event.is_pressed() and key_state.last_pressed == CellState.CROSSED:
+				key_state.last_pressed = null
+		"C":
+			if event.is_pressed() and key_state.last_pressed == null:
+				var new_state = cursor_cell.set_state_soft(CellState.MARKED)
+				if new_state == CellState.MARKED:
+					key_state.last_op = "set"
+				elif new_state == CellState.EMPTY:
+					key_state.last_op = "clear"
+				elif new_state == null:
+					pass
+				key_state.last_pressed = CellState.MARKED
+				
+			elif not event.is_pressed() and key_state.last_pressed == CellState.MARKED:
+				key_state.last_pressed = null
+
+
+func get_cell(x, y):
+	var all_cells = find_node("GridContainer").get_children()
+	var width = len(clues.top)
+	return all_cells[x + y * width]

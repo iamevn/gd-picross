@@ -1,6 +1,8 @@
 tool
 extends Sprite
 
+export var wrap_around = true
+
 var coords = {
 	x = 0,
 	y = 0,
@@ -22,44 +24,39 @@ func _grid_reset(grid: GridContainer):
 	grid_dims.y = grid.get_child_count() / grid.columns
 
 	print("got grid_reset, dims: %s, size: %s" % [grid_dims, grid_cell_size])
-	
-func _unhandled_input(event: InputEvent):
+
+
+func passed_input(event: InputEvent):
 	# TODO: use actions instead
 	if event.is_pressed():
-		match event.as_text():
-			"Left":
+		match [event.as_text(), event.is_pressed()]:
+			["Left", true]:
 				coords.x -= 1
-			"Right":
+			["Right", true]:
 				coords.x += 1
-			"Up":
+			["Up", true]:
 				coords.y -= 1
-			"Down":
+			["Down", true]:
 				coords.y += 1
 			_:
-				print("Unknown event: %s" % event.as_text())
+				print("Unknown event: %s %s" % [event.as_text(), "down" if event.is_pressed() else "up"])
 	stay_inside_grid()
 
 
 func _process(delta):
-#	if grid_container:
-#		grid_dims.x =  grid_container.columns
-#		grid_dims.y = grid_container.get_child_count() / grid_container.columns
-#
-#		grid_cell_size.x = grid_container.rect_size.x / grid_dims.x
-#		grid_cell_size.y = grid_container.rect_size.y / grid_dims.y
-
 	stay_inside_grid()
 	self.position.x = coords.x * grid_cell_size.x
 	self.position.y = coords.y * grid_cell_size.y
 
 
 func stay_inside_grid():
+	var right_edge = grid_dims.x - 1
+	var bottom_edge = grid_dims.y - 1
 	if coords.x < 0:
-		coords.x = 0
+		coords.x = right_edge if wrap_around else grid_dims.x
 	if coords.y < 0:
-		coords.y = 0
+		coords.y = bottom_edge if wrap_around else 0
 	if coords.x >= grid_dims.x:
-		coords.x = grid_dims.x - 1
+		coords.x = 0 if wrap_around else right_edge
 	if coords.y >= grid_dims.y:
-		coords.y = grid_dims.y - 1
-		
+		coords.y = 0 if wrap_around else bottom_edge
