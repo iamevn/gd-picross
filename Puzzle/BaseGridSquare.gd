@@ -73,14 +73,30 @@ func toggle(tstate):
 
 
 func _on_TextureRect_gui_input(event: InputEvent):
+	var new_state = null
 	if event is InputEventMouseButton and event.pressed:
 		match event.button_index:
 			BUTTON_LEFT:
-				toggle(CellState.FILLED)
+				new_state = toggle(CellState.FILLED)
+				get_parent().set_mouse(new_state, new_state == CellState.FILLED)
 			BUTTON_RIGHT:
-				toggle(CellState.CROSSED)
+				new_state = toggle(CellState.CROSSED)
+				get_parent().set_mouse(new_state, new_state == CellState.CROSSED)
+			BUTTON_MIDDLE:
+				new_state = toggle(CellState.MARKED)
+				get_parent().set_mouse(new_state, new_state == CellState.MARKED)
 			_:
 				print("Unknown grid_square_input %s", event.as_text())
+	elif event is InputEventMouseButton and not event.pressed:
+		match event.button_index:
+			BUTTON_LEFT:
+				get_parent().release_mouse(CellState.FILLED)
+			BUTTON_RIGHT:
+				get_parent().release_mouse(CellState.CROSSED)
+			BUTTON_MIDDLE:
+				get_parent().release_mouse(CellState.MARKED)
+			_:
+				pass
 
 
 func set_continue(set: bool, what: int):
@@ -114,3 +130,21 @@ func set_continue(set: bool, what: int):
 			if state == CellState.MARKED:
 				set_state(CellState.EMPTY)
 	return state
+
+
+func _on_BaseGridSquare_mouse_entered():
+	return
+	print("mouse entered (%s, %s)" % [coord.x, coord.y])
+	var mouse_state = get_parent().get_mouse()
+	if not mouse_state.last_pressed == null:
+		print("continuing %s %s (%s, %s)" % [mouse_state.last_op, mouse_state.last_pressed, coord.x, coord.y])
+		set_continue(mouse_state.last_op == "set", mouse_state.last_pressed)
+
+
+func _process(delta):
+	if not visible:
+		return
+	if get_global_rect().has_point(get_global_mouse_position()):
+		var mouse_state = get_parent().get_mouse()
+		if not mouse_state.last_pressed == null:
+			set_continue(mouse_state.last_op == "set", mouse_state.last_pressed)

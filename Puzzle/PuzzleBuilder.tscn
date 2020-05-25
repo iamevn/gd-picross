@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Puzzle/BorderMargin.gd" type="Script" id=1]
 [ext_resource path="res://Puzzle/frame.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Puzzle/PuzzleBuilder.tres" type="Theme" id=7]
 [ext_resource path="res://Puzzle/cursor.gd" type="Script" id=8]
 [ext_resource path="res://Puzzle/BaseGridSquare.gd" type="Script" id=9]
+[ext_resource path="res://Puzzle/GridContainer.gd" type="Script" id=10]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -94,6 +95,7 @@ margin_bottom = 160.0
 rect_min_size = Vector2( 32, 32 )
 rect_pivot_offset = Vector2( 16, 16 )
 columns = 5
+script = ExtResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -173,8 +175,8 @@ texture = ExtResource( 5 )
 centered = false
 flip_h = true
 hframes = 6
-[connection signal="resized" from="VBoxContainer/HBoxContainer/HHintsMargin" to="VBoxContainer/TopBorderMargin" method="_on_HHintsMargin_resized"]
 [connection signal="resized" from="VBoxContainer/HBoxContainer/HHintsMargin" to="VBoxContainer/BottomBorderMargin" method="_on_HHintsMargin_resized"]
+[connection signal="resized" from="VBoxContainer/HBoxContainer/HHintsMargin" to="VBoxContainer/TopBorderMargin" method="_on_HHintsMargin_resized"]
 [connection signal="gui_input" from="VBoxContainer/HBoxContainer/PuzzleAreaPanel/GridContainer/BaseGridSquare" to="VBoxContainer/HBoxContainer/PuzzleAreaPanel/GridContainer/BaseGridSquare" method="_on_TextureRect_gui_input"]
 [connection signal="gui_input" from="VBoxContainer/HBoxContainer/PuzzleAreaPanel/GridContainer/BaseGridSquare2" to="VBoxContainer/HBoxContainer/PuzzleAreaPanel/GridContainer/BaseGridSquare2" method="_on_TextureRect_gui_input"]
 [connection signal="gui_input" from="VBoxContainer/HBoxContainer/PuzzleAreaPanel/GridContainer/BaseGridSquare3" to="VBoxContainer/HBoxContainer/PuzzleAreaPanel/GridContainer/BaseGridSquare3" method="_on_TextureRect_gui_input"]
@@ -201,3 +203,4 @@ hframes = 6
 [connection signal="gui_input" from="VBoxContainer/HBoxContainer/PuzzleAreaPanel/GridContainer/BaseGridSquare24" to="VBoxContainer/HBoxContainer/PuzzleAreaPanel/GridContainer/BaseGridSquare24" method="_on_TextureRect_gui_input"]
 [connection signal="gui_input" from="VBoxContainer/HBoxContainer/PuzzleAreaPanel/GridContainer/BaseGridSquare25" to="VBoxContainer/HBoxContainer/PuzzleAreaPanel/GridContainer/BaseGridSquare25" method="_on_TextureRect_gui_input"]
 [connection signal="gui_input" from="BaseGridSquare" to="BaseGridSquare" method="_on_TextureRect_gui_input"]
+[connection signal="mouse_entered" from="BaseGridSquare" to="BaseGridSquare" method="_on_BaseGridSquare_mouse_entered"]
